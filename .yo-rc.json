@@ -1,0 +1,14 @@
+{
+  "generator-ui5-ts-app": {
+    "application": "jsonomodel",
+    "namespace": "jwozniczak.io",
+    "framework": "OpenUI5",
+    "frameworkVersion": "1.90.1",
+    "author": "Jacek W",
+    "tstypes": "@openui5/ts-types-esm",
+    "tstypesVersion": "1.90.1",
+    "appId": "jwozniczak.io.jsonomodel",
+    "appURI": "jwozniczak/io/jsonomodel",
+    "setupCompleted": true
+  }
+}
