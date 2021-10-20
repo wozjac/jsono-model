@@ -1,113 +1,107 @@
-# jsonomodel
+# SAPUI5/OpenUI5 JSONOModel
 
-## Description
+**Just experimental, not battle tested**
 
-This app demonstrates a TypeScript setup for developing UI5 applications.
+## Overview
 
-**The template is inspired by the [`SAP-samples/ui5-typescript-helloworld`](https://github.com/SAP-samples/ui5-typescript-helloworld) project which  also contains [a detailed step-by-step guide](https://github.com/SAP-samples/ui5-typescript-helloworld/blob/main/step-by-step.md). It explains how this setup is created and how all the bits and pieces fit together**
+Experimental JSON-based model using JS Proxy for state observation.
 
-| :point_up: Overview of TypeScript-related Entities |
-|:---------------------------|
-| The UI5 type definitions (`*.d.ts` files) are loaded as dev dependency from [npm](https://www.npmjs.com/package/@openui5/ts-types-esm). They are work in progress, so while they should be working well already, we are still improving them, which might also lead to breaking changes. |
-| The file [tsconfig.json](tsconfig.json) contains the configuration for the TypeScript compilation, including a reference to these UI5 `*.d.ts` files. |
-| Normally, the UI5 JavaScript files (controllers, Component.js etc.) would reside in the `webapp` folder. Now they are in the [src](src) folder. The TypeScript compilation will create the `webapp` folder and put all output there. |
-| In addition to the TypeScript compilation, there is also a conversion from the ES6 module and class syntax used in the source files to the classic UI5 module loading and class definition syntax (`sap.ui.define(...)` and `superClass.extend(...)`). This conversion is using the [babel-plugin-transform-modules-ui5](https://github.com/r-murphy/babel-plugin-transform-modules-ui5) project from Ryan Murphy. |
-| Both, the TypeScript compilation and the ES6 syntax transformation, are executed by Babel, as configured in the file [.babelrc.json](.babelrc.json) |
-| This combined transformation is triggered by both the `build:ts` and `watch:ts` scripts in [package.json](package.json). |
+## Idea
 
-## Requirements
+In UI5 JSON Model can be set as "observable".
 
-Either [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) for dependency management.
+_The observation feature is experimental! When observation is activated, the application can directly change the JS objects without the need to call setData, setProperty or refresh. Observation does only work for existing properties in the JSON, it cannot detect new properties or new array entries._
 
-## Preparation
+So in short you pass an object and later work only with this object, without calling setProperty etc. and changes are reflected in bindings and UI fields.
 
-Use `npm` (or `yarn`) to install the dependencies:
+```javascript
+const dataObject = {
+  someValue: "aabb",
+};
 
-```sh
-npm i
+const standardJSONModel = new JSONModel(dataObject, true);
+
+this.getView().setModel(standardJSONModel, "standardJSON");
+
+// later in code
+dataObject.someValue = "newValue";
+// newValue visible in the UI
 ```
 
-(To use yarn, just do `yarn` instead.)
+JSONOModel is similar however handles new properties and new array items.
 
-## Run the App
+## Usage
 
-Execute the following command to run the app locally for development in watch mode (the browser reloads the app automatically when there are changes in the source code):
+The only thing to remember is to get back and use a reference to the model data object after passing it to JSONOModel.
 
-```sh
-npm start
+```typescript
+const dataObject = {
+  someValue: ["a", "b"],
+};
+
+let simpleJSONOModel = new JSONOModel(dataObject);
+this.getView().setModel(simpleJSONOModel, "simpleJSONOModel");
+simpleJSONOModel = simpleJSONOModel.getData();
+// later in code, new array values will be reflected in UI (as well as new properties), see sample app
+dataObject.someValue.push("c");
 ```
 
-As shown in the terminal after executing this command, the app is then running on http://localhost:8080/index.html. A browser window with this URL should automatically open.
+Model data as a separate class (file model/AppViewModel.ts)
 
-(When using yarn, do `yarn start` instead.)
+```typescript
+export class AppViewModel {
+  public getNameCounter = 0;
 
-## Debug the App
+  private _name = "Bonifatzy";
+  public address = { street: "3 Piggys Aveanue" };
 
-In the browser, you can directly debug the original TypeScript code, which is supplied via sourcemaps (need to be enabled in the browser's developer console if it does not work straight away). If the browser doesn't automatically jump to the TypeScript code when setting breakpoints, use e.g. Ctrl+P in Chrome to open the `*.ts` file you want to debug.
+  public description: { personality: string } = {
+    personality: "Nervous",
+  };
 
-## Build the App
+  public favorites = [
+    { label: "French Fries", category: "Food" },
+    { label: "Rubik Cube", category: "Hobby" },
+  ];
 
-### Unoptimized (but quick)
+  public get name(): string {
+    return this._name;
+  }
 
-Execute the following command to build the project and get an app that can be deployed:
+  public set name(name: string) {
+    this.getNameCounter++;
 
-```sh
-npm run build
+    if (this.getNameCounter > 2) {
+      throw new Error("You can't update more than 2 times");
+    }
+
+    this._name = name;
+  }
+}
 ```
 
-The result is placed into the `dist` folder. To start the generated package, just run
+In the controller:
 
-```sh
-npm run start:dist
+```typescript
+const separateJSONOModel = new JSONOModel(new AppViewModel());
+this.getView().setModel(separateJSONOModel, "separateJSONOModel");
+this.appViewModel = separateJSONOModel.getData();
 ```
 
-Note that index.html still loads the UI5 framework from the relative URL `resources/...`, which does not physically exist, but is only provided dynamically by the UI5 tooling. So for an actual deployment you should change this URL to either [the CDN](https://openui5.hana.ondemand.com/#/topic/2d3eb2f322ea4a82983c1c62a33ec4ae) or your local deployment of UI5.
+## Sample
 
-(When using yarn, do `yarn build` and `yarn start:dist` instead.)
-
-### Optimized
-
-For an optimized self-contained build (takes longer because the UI5 resources are built, too), do:
-
-```sh
-npm run build:opt
-```
-
-To start the generated package, again just run:
-
-```sh
-npm run start:dist
-```
-
-In this case, all UI5 framework resources are also available within the `dist` folder, so the folder can be deployed as-is to any static web server, without changing the bootstrap URL.
-
-With the self-contained build, the bootstrap URL in index.html has already been modified to load the newly created `sap-ui-custom.js` for bootstrapping, which contains all app resources as well as all needed UI5 JavaScript resources. Most UI5 resources inside the `dist` folder are for this reason actually **not** needed to run the app. Only the non-JS-files, like translation texts and CSS files are used and must also be deployed. (Only when for some reason JS files are missing from the optimized self-contained bundle, they are also loaded separately.)
-
-(When using yarn, do `yarn build:opt` and `yarn start:dist` instead.)
-
-## Check the Code
-
-Do the following to run a TypeScript check:
-
-```sh
-npm run ts-typecheck
-```
-
-This checks the application code for any type errors (but will also complain in case of fundamental syntax issues which break the parsing).
-
-To lint the TypeScript code, do:
-
-```sh
-npm run lint
-```
-
-(Again, when using yarn, do `yarn ts-typecheck` and `yarn lint` instead.)
-
-## References
-
-Once you have understood the setup and want to inspect the code of a slightly more comprehensive UI5 app written in TypeScript, you can check out the [TypeScript version of the UI5 CAP Event App Sample](https://github.com/SAP-samples/ui5-cap-event-app/tree/typescript).
-
+Run _npm install_ && _npm start_ to play with examples and comparison.
 
 ## License
 
-This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
+This plugin is licensed under the MIT license.
+
+## Author
+
+Feel free to contact me:
+
+wozjac@zoho.com
+
+Twitter (https://twitter.com/jacekwoz)
+
+LinkedIn (https://www.linkedin.com/in/jacek-wznk)

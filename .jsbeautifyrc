@@ -1,0 +1,6 @@
+{
+    "html": {
+        "wrap_attributes": "force",
+        "indent_size": 2
+    }
+}
