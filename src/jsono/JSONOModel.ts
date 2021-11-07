@@ -1,9 +1,26 @@
 /* eslint-disable */
 import JSONModel from "sap/ui/model/json/JSONModel";
 
+interface options {
+  // call onAnyGet method? Must be defined in the dataObject passed to the JSONOModel
+  callOnAnyGet?: boolean;
+  // call onAnySet method?
+  callOnAnySet?: boolean;
+}
+
 export class JSONOModel extends JSONModel {
-  constructor(dataObject: any) {
+  [x: string]: any;
+  private _options: options;
+
+  constructor(
+    dataObject: any,
+    options: options = {
+      callOnAnyGet: false,
+      callOnAnySet: false,
+    }
+  ) {
     super();
+    this._options = options;
     const proxiedDataObject = this.makeProxyFor(dataObject);
     this.setData(proxiedDataObject);
   }
@@ -21,12 +38,27 @@ export class JSONOModel extends JSONModel {
         ) {
           return new Proxy(target[propertyKey], interceptor);
         } else if (typeof target[propertyKey] !== "undefined") {
+          if (
+            self._options.callOnAnyGet === true &&
+            typeof dataObject.onAnyGet === "function"
+          ) {
+            dataObject.onAnyGet(propertyKey);
+          }
+
           return Reflect.get(target, propertyKey, receiver);
         }
       },
 
       set(target: any, propertyKey: string, value: any, receiver: any): any {
         const result = Reflect.set(target, propertyKey, value, receiver);
+
+        if (
+          self._options.callOnAnySet === true &&
+          typeof dataObject.onAnySet === "function"
+        ) {
+          dataObject.onAnySet(propertyKey);
+        }
+
         self.checkUpdate();
         return result;
       },

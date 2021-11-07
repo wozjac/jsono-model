@@ -71,7 +71,11 @@ export default class AppController extends Controller {
     this.dataForSimpleJSONOModel = simpleJSONOModel.getData();
 
     // JSONO Model from a separate file with property methods
-    const separateJSONOModel = new JSONOModel(new AppViewModel());
+    const separateJSONOModel = new JSONOModel(new AppViewModel(), {
+      callOnAnyGet: false,
+      callOnAnySet: true,
+    });
+
     this.getView().setModel(separateJSONOModel, "separateJSONOModel");
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     this.appViewModel = separateJSONOModel.getData();

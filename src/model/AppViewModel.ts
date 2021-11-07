@@ -26,4 +26,20 @@ export class AppViewModel {
 
     this._name = name;
   }
+
+  public onAnyGet(propertyKey: string): void {
+    console.log(`Property ${propertyKey} was read`);
+  }
+
+  public onAnySet(propertyKey: string): void {
+    console.log(`Property ${propertyKey} was set`);
+  }
+
+  public onNameSet(): void {
+    console.log("Name was changed");
+  }
+
+  public onNameGet(): void {
+    console.log("Name was read");
+  }
 }

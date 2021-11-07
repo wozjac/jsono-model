@@ -1,14 +1,14 @@
 # SAPUI5/OpenUI5 JSONOModel
 
-**Just experimental, not battle tested**
+**!!! Just experimental, not battle tested !!!**
 
 ## Overview
 
-Experimental JSON-based model using JS Proxy for state observation.
+Experimental JSON-based model using JS Proxy for state observation (will not work in IE).
 
 ## Idea
 
-In UI5 JSON Model can be set as "observable".
+In UI5 the standard JSON Model can be set as "observable".
 
 _The observation feature is experimental! When observation is activated, the application can directly change the JS objects without the need to call setData, setProperty or refresh. Observation does only work for existing properties in the JSON, it cannot detect new properties or new array entries._
 
@@ -28,11 +28,11 @@ dataObject.someValue = "newValue";
 // newValue visible in the UI
 ```
 
-JSONOModel is similar however handles new properties and new array items.
+JSONOModel is similar however handles new properties and new array items. It is based on JSON Model and can be used in a similar way.
 
 ## Usage
 
-The only thing to remember is to get back and use a reference to the model data object after passing it to JSONOModel.
+The only thing to remember is to get back and use a reference to the model data object after passing it to JSONOModel and work with this new, proxied reference.
 
 ```typescript
 const dataObject = {
@@ -86,6 +86,27 @@ In the controller:
 const separateJSONOModel = new JSONOModel(new AppViewModel());
 this.getView().setModel(separateJSONOModel, "separateJSONOModel");
 this.appViewModel = separateJSONOModel.getData();
+```
+
+Two hooks are provided and will be called if you configure them:
+
+```typescript
+new JSONOModel(new AppViewModel(), {
+  callOnAnyGet: true,
+  callOnAnySet: true,
+});
+```
+
+Methods will be called if present in the object:
+
+```typescript
+public onAnyGet(propertyKey: string): void {
+  console.log(`Property ${propertyKey} was read`);
+}
+
+public onAnySet(propertyKey: string): void {
+  console.log(`Property ${propertyKey} was set`);
+}
 ```
 
 ## Sample
