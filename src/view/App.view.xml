@@ -44,7 +44,7 @@
                 value="{standardJSON>/description/personality}">
               </Input>
 
-              <Button text="Display the field value of the model's data object"
+              <Button text="Get the value from the bound model's data object"
                 press="onPressDisplayPersonalityForStandard">
               </Button>
 
@@ -116,7 +116,7 @@
                 value="{simpleJSONOModel>/description/personality}">
               </Input>
 
-              <Button text="Display the field value of the model's data object"
+              <Button text="Get the value from the bound model's data object"
                 press="onPressDisplayPersonalityForSimpleJSONO">
               </Button>
 
@@ -181,7 +181,7 @@
                 value="{separateJSONOModel>/description/personality}">
               </Input>
 
-              <Button text="Display the field value of the model's data object"
+              <Button text="Get the value from the bound model's data object"
                 press="onPressDisplayPersonalityForSeparateJSONO">
               </Button>
 
