@@ -1,0 +1,226 @@
+<mvc:View controllerName="jwozniczak.io.jsonomodel.controller.App"
+  displayBlock="true"
+  xmlns="sap.m"
+  xmlns:layout="sap.ui.layout"
+  xmlns:mvc="sap.ui.core.mvc">
+
+  <App id="app">
+    <pages>
+      <Page>
+        <content>
+          <Panel headerText="Standard observable JSON model"
+            expandable="true"
+            expanded="true">
+            <layout:VerticalLayout>
+              <FlexBox alignItems="Center">
+                <Button text="Update name"
+                  class="sapUiSmallMarginEnd"
+                  press="onPressUpdateNameForStandard">
+                </Button>
+                <Text text="Updating existing value in the model data object..." />
+              </FlexBox>
+
+              <Input editable="false"
+                width="25%"
+                value="{standardJSON>/name}">
+              </Input>
+
+              <FlexBox alignItems="Center">
+                <Button text="Add 'city' property to 'address'"
+                  class="sapUiSmallMarginEnd"
+                  press="onPressAddCityForStandard">
+                </Button>
+
+                <Text text="Adding a new property to the data object..."></Text>
+              </FlexBox>
+
+              <Input editable="false"
+                width="25%"
+                value="{standardJSON>/address/city}">
+              </Input>
+
+              <Input editable="true"
+                width="25%"
+                value="{standardJSON>/description/personality}">
+              </Input>
+
+              <Button text="Get the value from the bound model's data object"
+                press="onPressDisplayPersonalityForStandard">
+              </Button>
+
+              <Text text="Operations on the array..."></Text>
+
+              <Button text="Update a property in the data object array"
+                press="onPressUpdateArrayForStandard">
+              </Button>
+
+              <Button text="Add a new item to the data object array"
+                press="onPressAddToArrayForStandard">
+              </Button>
+
+              <Button text="Remove an item from the data object array"
+                press="onPressRemoveFromArrayForStandard">
+              </Button>
+
+              <Table items="{standardJSON>/favorites}"
+                width="50%">
+                <columns>
+                  <Column>
+                    <Text text="Name"></Text>
+                  </Column>
+                  <Column>
+                    <Text text="Category"></Text>
+                  </Column>
+                </columns>
+                <items>
+                  <ColumnListItem>
+                    <cells>
+                      <Text text="{standardJSON>label}"></Text>
+                      <Text text="{standardJSON>category}"></Text>
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </layout:VerticalLayout>
+          </Panel>
+
+          <Panel headerText="🌟 JSONO model (simple) 🌟"
+            expandable="true"
+            expanded="true">
+            <layout:VerticalLayout>
+              <FlexBox alignItems="Center">
+                <Button text="Update name"
+                  class="sapUiSmallMarginEnd"
+                  press="onPressUpdateNameForSimpleJSONO">
+                </Button>
+
+                <Text text="Updating existing value in the model data object..."></Text>
+              </FlexBox>
+
+              <Input editable="false"
+                value="{simpleJSONOModel>/name}">
+              </Input>
+
+              <Text text="A new property in the model data object is now recognized..."></Text>
+
+              <Input editable="false"
+                value="{simpleJSONOModel>/address/city}">
+              </Input>
+
+              <Button text="Add 'city' property to 'address'"
+                press="onPressAddCityForSimpleJSONO">
+              </Button>
+
+              <Input editable="true"
+                width="25%"
+                value="{simpleJSONOModel>/description/personality}">
+              </Input>
+
+              <Button text="Get the value from the bound model's data object"
+                press="onPressDisplayPersonalityForSimpleJSONO">
+              </Button>
+
+              <Table items="{simpleJSONOModel>/favorites}"
+                width="50%">
+                <columns>
+                  <Column>
+                    <Text text="Name" />
+                  </Column>
+                  <Column>
+                    <Text text="Category" />
+                  </Column>
+                </columns>
+                <items>
+                  <ColumnListItem>
+                    <cells>
+                      <Text text="{simpleJSONOModel>label}" />
+                      <Text text="{simpleJSONOModel>category}" />
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+              <Button text="Update a property in the data object array"
+                press="onPressUpdateArrayForSimpleJSONO">
+              </Button>
+
+              <Button text="Add a new item to the data object array"
+                press="onPressAddToArrayForSimpleJSONO">
+              </Button>
+
+              <Button text="Remove an item from the data object array"
+                press="onPressRemoveFromArrayForSimpleJSONO">
+              </Button>
+            </layout:VerticalLayout>
+          </Panel>
+
+          <Panel headerText="🌟 JSONO model from a separate file with property methods 🌟">
+            <layout:VerticalLayout>
+              <Text text="Here model data is defined as a separate file - AppViewModel with data and methods" />
+
+              <Input id="appViewModelInput"
+                editable="false"
+                value="{separateJSONOModel>/name}">
+              </Input>
+
+              <Button text="Update name"
+                press="onPressUpdateNameForSeparateJSONO">
+              </Button>
+
+              <Text text="A new property in the model object is recognized..." />
+
+              <Input editable="false"
+                value="{separateJSONOModel>/address/city}">
+              </Input>
+
+              <Button text="Add 'city' property to 'address'"
+                press="onPressAddCityForSeparateJSONO">
+              </Button>
+
+              <Input editable="true"
+                width="25%"
+                value="{separateJSONOModel>/description/personality}">
+              </Input>
+
+              <Button text="Get the value from the bound model's data object"
+                press="onPressDisplayPersonalityForSeparateJSONO">
+              </Button>
+
+              <Table items="{separateJSONOModel>/favorites}"
+                width="50%">
+                <columns>
+                  <Column>
+                    <Text text="Name" />
+                  </Column>
+                  <Column>
+                    <Text text="Category" />
+                  </Column>
+                </columns>
+                <items>
+                  <ColumnListItem>
+                    <cells>
+                      <Text text="{separateJSONOModel>label}" />
+                      <Text text="{separateJSONOModel>category}" />
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+
+              <Button text="Update a property in the data object array"
+                press="onPressUpdateArrayForSeparateJSONO">
+              </Button>
+
+              <Button text="Add a new item to the data object array"
+                press="onPressAddToArrayForSeparateJSONO">
+              </Button>
+
+              <Button text="Remove an item from the data object array"
+                press="onPressRemoveFromArrayForSeparateJSONO">
+              </Button>
+            </layout:VerticalLayout>
+          </Panel>
+        </content>
+      </Page>
+    </pages>
+  </App>
+
+</mvc:View>
