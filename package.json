@@ -1,7 +1,7 @@
 {
     "name": "jsonomodel",
     "version": "1.0.0",
-    "description": "SAP/OpenUI5 JSON-based model with full observability",
+    "description": "SAPUI5/OpenUI5 JSON-based model with full observability",
     "author": "Jacek Woźniczak",
     "keywords": ["JSON Mdodel", "SAPUI5", "OpenUI5", "UI5"],
     "homepage": "https://github.com/wozjac/jsono-model",
