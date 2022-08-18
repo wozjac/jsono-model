@@ -10,9 +10,13 @@ Experimental JSON-based model using JS Proxy for state observation (will not wor
 
 In UI5 the standard JSON Model can be set as "observable".
 
-_The observation feature is experimental! When observation is activated, the application can directly change the JS objects without the need to call setData, setProperty or refresh. Observation does only work for existing properties in the JSON, it cannot detect new properties or new array entries._
+_The observation feature is experimental! When observation is activated, the application
+can directly change the JS objects without the need to call setData, setProperty or refresh.
+Observation does only work for existing properties in the JSON, it cannot detect new properties
+or new array entries._
 
-So in short you pass an object and later work only with this object, without calling setProperty etc. and changes are reflected in bindings and UI fields.
+So in short you pass an object and later work only with this object, without calling setProperty
+etc. and changes are reflected in bindings and UI fields.
 
 ```javascript
 const dataObject = {
@@ -28,11 +32,13 @@ dataObject.someValue = "newValue";
 // newValue visible in the UI
 ```
 
-JSONOModel is similar however handles new properties and new array items. It is based on JSON Model and can be used in a similar way.
+JSONOModel is similar however handles new properties and new array items. It is based
+on JSON Model and can be used in a similar way.
 
 ## Usage
 
-The only thing to remember is to get back and use a reference to the model data object after passing it to JSONOModel and work with this new, proxied reference.
+The only thing to remember is to get back and use a reference to the model data
+object after passing it to JSONOModel and work with this new, proxied reference.
 
 ```typescript
 const dataObject = {
@@ -121,8 +127,7 @@ This plugin is licensed under the MIT license.
 
 Feel free to contact me:
 
-wozjac@zoho.com
-
-Twitter (https://twitter.com/jacekwoz)
-
-LinkedIn (https://www.linkedin.com/in/jacek-wznk)
+- wozjac@zoho.com
+- [jacekw.dev](https://jacekw.dev)
+- Twitter (<https://twitter.com/jacekwoz>)
+- LinkedIn (<https://www.linkedin.com/in/jacek-wznk>)
