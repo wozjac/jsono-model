@@ -11,6 +11,7 @@ interface options {
 export class JSONOModel extends JSONModel {
   [x: string]: any;
   private _options: options;
+  private proxies = new WeakMap();
 
   constructor(
     dataObject: any,
@@ -36,7 +37,16 @@ export class JSONOModel extends JSONModel {
           typeof target[propertyKey] === "object" &&
           target[propertyKey] !== null
         ) {
-          return new Proxy(target[propertyKey], interceptor);
+          let proxy;
+
+          if (self.proxies.has(target[propertyKey])) {
+            proxy = self.proxies.get(target[propertyKey]);
+          } else {
+            proxy = new Proxy(target[propertyKey], interceptor);
+            self.proxies.set(target[propertyKey], proxy);
+          }
+
+          return proxy;
         } else if (typeof target[propertyKey] !== "undefined") {
           if (
             self._options.callOnAnyGet === true &&
