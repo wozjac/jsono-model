@@ -123,6 +123,6 @@ Feel free to contact me:
 
 wozjac@zoho.com
 
-Twitter (https://twitter.com/jacekwoz)
+Bluesky (<https://jacekwoz.bsky.social>)
 
-LinkedIn (https://www.linkedin.com/in/jacek-wznk)
+LinkedIn (<https://www.linkedin.com/in/jacek-wznk>)
